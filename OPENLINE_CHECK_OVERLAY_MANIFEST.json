@@ -1,0 +1,57 @@
+{
+  "base_commit": "f0c7e19d73218d0d4f44d9d1ddc10bfa4744db24",
+  "claim_boundary": "front_door_only_reuses_existing_gate",
+  "file_count": 12,
+  "files": {
+    ".github/workflows/openline-check.yml": {
+      "sha256": "72fa4902932b33bdef894139557d8bd2e617538e828697cdaff8cf67b85b9417",
+      "size": 1313
+    },
+    "OPENLINE_CHECK.md": {
+      "sha256": "88afe50dc8494a0a8b3fbce1ed32500f57097bce14880b4a6a5120b89393656b",
+      "size": 2811
+    },
+    "action.yml": {
+      "sha256": "960af85abaa12501100425cba17f92c1683e3aa95dc4231d8c6b7a82f8a84530",
+      "size": 1928
+    },
+    "examples/openline-check/check.json": {
+      "sha256": "8abf28a96621d86ed8b5650bb38451e8c787b92a7492aa060455cdf26ddab180",
+      "size": 272
+    },
+    "examples/openline-check/evidence/review.json": {
+      "sha256": "0d409b85b1aceabe6f132c1de868acb4890e038b9b65e6fae6df63c97da05f6c",
+      "size": 35
+    },
+    "examples/openline-check/evidence/tests.json": {
+      "sha256": "16d14b7c63a2db0b0a46edc34dcac99f17364d81182d412a164e8ace89a07676",
+      "size": 33
+    },
+    "examples/openline-check/producer-trust.json": {
+      "sha256": "995512158488a6889ce4a7d79551a5c5d20ab732fd127cae4fe1d89fd6ec05fa",
+      "size": 87
+    },
+    "examples/openline-check/receiver-policy.json": {
+      "sha256": "c8b9f1e905fbe0a8e24bd80616801aea2db8cbc4d8b992d20192dd9d98280401",
+      "size": 782
+    },
+    "examples/openline-check/source.receipt.json": {
+      "sha256": "bbc8beb6b97fdcb784f9b980e5005abd090bffced1c7d04a973a57c0796e32b6",
+      "size": 1111
+    },
+    "openline_lite/check.py": {
+      "sha256": "3d16ee0aa7e903f8d1726213bc50d5fe30300e200404a649d258dbfbd2195c3f",
+      "size": 12765
+    },
+    "pyproject.toml": {
+      "sha256": "f7c1e947d4474d00679c307040b3efa49ea1c91b1d0f0ba689b6a4c48ef2591e",
+      "size": 1416
+    },
+    "tests/test_check.py": {
+      "sha256": "85005c5c0128674b4833e1189946f6a4024a4f875c0b5dc2f6162394986c65cc",
+      "size": 4774
+    }
+  },
+  "profile": "openline-check-overlay.v1",
+  "target_repository": "terryncew/openline-lite"
+}

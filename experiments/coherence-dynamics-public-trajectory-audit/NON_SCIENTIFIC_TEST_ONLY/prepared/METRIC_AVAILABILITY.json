@@ -1,0 +1,12 @@
+{
+  "rows_share_identical_status": true,
+  "schema": "coherence-dynamics.public-trajectory.metric-availability.v1",
+  "statuses": {
+    "frozen_003_mapper_status": "UNAVAILABLE_NO_VERIFIED_DEPENDENCY_EDGE_OR_STATE_FIELD_MAPPING",
+    "latency_status": "UNAVAILABLE_NOT_IN_PUBLIC_SCHEMA",
+    "logprob_entropy_status": "UNAVAILABLE_NOT_IN_PUBLIC_SCHEMA",
+    "phi_star_status": "UNAVAILABLE_NO_SUBSTRATE_CALIBRATION",
+    "synchrony_status": "UNAVAILABLE_NO_FROZEN_PHASE_MAPPING",
+    "vkd_status": "UNAVAILABLE_NO_EXTERNAL_KAPPA_STAR_AND_PHI_FLOOR"
+  }
+}

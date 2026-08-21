@@ -1,0 +1,57 @@
+name: OpenLine Check
+description: Ask whether the presented evidence earns the next action.
+inputs:
+  check-pack:
+    description: Path to openline.check.v1 JSON in the calling repository.
+    required: true
+    default: .openline/check.json
+  gate-id:
+    description: Receiver gate identifier.
+    required: false
+    default: openline-check-github
+  gate-key:
+    description: Optional raw Ed25519 private key hex. Prefer a GitHub secret.
+    required: false
+    default: ""
+  output-dir:
+    description: Directory for proof.md, result.json, and decision.receipt.json.
+    required: false
+    default: .openline-check
+outputs:
+  decision:
+    description: COMMIT, QUARANTINE, DENY, NO_BADGE, or ROLLBACK_REQUEST.
+    value: ${{ steps.check.outputs.decision }}
+  verdict:
+    description: VERIFIED, UNDECIDABLE, or REJECTED.
+    value: ${{ steps.check.outputs.verdict }}
+runs:
+  using: composite
+  steps:
+    - name: Install OpenLine Lite
+      shell: bash
+      run: python -m pip install "${{ github.action_path }}"
+    - name: Run OpenLine Check
+      id: check
+      shell: bash
+      env:
+        OPENLINE_GATE_PRIVATE_KEY: ${{ inputs.gate-key }}
+      run: |
+        set +e
+        openline-check "${{ inputs.check-pack }}" \
+          --gate-id "${{ inputs.gate-id }}" \
+          --output-dir "${{ inputs.output-dir }}"
+        code=$?
+        set -e
+        python - "${{ inputs.output-dir }}/result.json" "$GITHUB_OUTPUT" <<'PY'
+        import json
+        import sys
+        from pathlib import Path
+        result_path = Path(sys.argv[1])
+        output_path = Path(sys.argv[2])
+        if result_path.exists():
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+            with output_path.open("a", encoding="utf-8") as handle:
+                handle.write(f"decision={result['decision']}\n")
+                handle.write(f"verdict={result['verdict']}\n")
+        PY
+        exit "$code"

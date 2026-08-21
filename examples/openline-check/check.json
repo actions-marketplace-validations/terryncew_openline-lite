@@ -1,0 +1,11 @@
+{
+  "evidence": {
+    "review": "evidence/review.json",
+    "tests": "evidence/tests.json"
+  },
+  "label": "Merge PR #481",
+  "policy": "receiver-policy.json",
+  "producer_trust": "producer-trust.json",
+  "schema": "openline.check.v1",
+  "source": "source.receipt.json"
+}
