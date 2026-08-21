@@ -55,3 +55,7 @@ runs:
                 handle.write(f"verdict={result['verdict']}\n")
         PY
         exit "$code"
+
+branding:
+  icon: check-circle
+  color: blue
