@@ -34,6 +34,7 @@ Changelog = "https://github.com/terryncew/openline-lite/blob/main/CHANGELOG.md"
 
 [project.scripts]
 olp-lite = "openline_lite.cli:main"
+openline-check = "openline_lite.check:main"
 
 [tool.setuptools]
 packages = ["openline_lite", "openline_lite.schemas"]

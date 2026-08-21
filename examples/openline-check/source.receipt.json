@@ -1,0 +1,34 @@
+{
+  "payload": {
+    "action": {
+      "name": "merge PR #481",
+      "target": "abc123",
+      "type": "merge_code"
+    },
+    "claim": "The current patch has passing tests and current review approval.",
+    "evidence": [
+      {
+        "id": "tests",
+        "media_type": "application/json",
+        "sha256": "16d14b7c63a2db0b0a46edc34dcac99f17364d81182d412a164e8ace89a07676"
+      },
+      {
+        "id": "review",
+        "media_type": "application/json",
+        "sha256": "0d409b85b1aceabe6f132c1de868acb4890e038b9b65e6fae6df63c97da05f6c"
+      }
+    ],
+    "issued_at": "2026-08-21T17:55:00Z",
+    "issuer": "coding-agent-demo",
+    "run_id": "demo-481",
+    "schema": "olp.source.v1",
+    "sequence": 0
+  },
+  "payload_sha256": "25404da849c43e8e764e8bb5265d822481cf42da29018923101eaa131985996e",
+  "proof": {
+    "alg": "Ed25519",
+    "key_id": "demo-agent",
+    "public_key": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+    "signature": "5b6164750d5d363a9f343bad1e4b8077f73fded182c4364193565fa761b28d44aca5082c553a2027b4209ed195d89ca58afee332f14c167801fef7e8726dd104"
+  }
+}

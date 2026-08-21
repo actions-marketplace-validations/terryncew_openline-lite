@@ -1,0 +1,24 @@
+{
+  "api_credit_spend_usd": 0.0,
+  "audit_id": "CD_PUBLIC_CODING_TRAJECTORY_CALIBRATION_001",
+  "audit_result_sha256": "cfb21acd040b6980dd421526d636300f2b9fa7ddf7491fa165905390d8f95d46",
+  "bootstrap_iterations_requested": 20,
+  "created_at_utc": "2026-08-04T07:51:29Z",
+  "data_manifest_sha256": "386dc9b3e6d3307bf38bb0ee67df8d68f33982d4ddf20c6a503caff5eb058d7d",
+  "disposition": "BASELINE_EQUIVALENT",
+  "feature_label_binding_sha256": "064240261196666f1833c005a764f3768675ad423be577a6ff67aa6c9b5964da",
+  "feature_rows_analyzed": 240,
+  "model_api_calls": 0,
+  "public_dataset_rows_analyzed": 60,
+  "real_assignments_created": 0,
+  "schema": "coherence-dynamics.public-trajectory.execution-receipt.v1",
+  "scientific_claim": "bounded coding-trajectory benchmark result only",
+  "source_hashes": {
+    "AUDIT_PROTOCOL.json": "baa0ab718d6fc2f82b4b711c0989e095729b804a8f0a7f1808501364fd51383b",
+    "FEATURE_SCHEMA.json": "c7d94995fa2df7b36107040a5e9bb3c863e88eda13006519708ef6befc7bb3c8",
+    "LEAKAGE_POLICY.json": "b1b61f0907bcd28fd229558b7f15afee11d070f7fc2d679b9913316c4588c304",
+    "RESULT_RULE.json": "4c649a23677cde3dd861eef22de936bc4ac4a8773c87daf84b6a3202e4f9612f",
+    "SOURCE_REGISTER.json": "c41b114477519bce105fba6d73345188c79c72c19c5e40982ee47e9da46ceabc",
+    "requirements.txt": "4218e0fb61134b7ebdb57fa5bb1e31a82b5fd191d12c8f2cd5e6e311959a4d2a"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "allowed_actions": [
+    "merge_code"
+  ],
+  "claim_rules": [
+    {
+      "evidence_id": "tests",
+      "expected": true,
+      "id": "tests-pass",
+      "pointer": "/passed"
+    },
+    {
+      "evidence_id": "tests",
+      "expected": "abc123",
+      "id": "tests-current",
+      "pointer": "/commit"
+    },
+    {
+      "evidence_id": "review",
+      "expected": true,
+      "id": "review-approved",
+      "pointer": "/approved"
+    },
+    {
+      "evidence_id": "review",
+      "expected": "abc123",
+      "id": "review-current",
+      "pointer": "/commit"
+    }
+  ],
+  "max_age_seconds": 3600,
+  "on_undecidable": "QUARANTINE",
+  "policy_id": "merge-current-evidence",
+  "required_evidence": [
+    "tests",
+    "review"
+  ],
+  "rollback_supported": false,
+  "version": "1"
+}

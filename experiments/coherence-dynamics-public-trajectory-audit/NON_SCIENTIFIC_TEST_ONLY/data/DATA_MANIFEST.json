@@ -1,0 +1,11 @@
+{
+  "files": {
+    "data/synthetic_nebius.jsonl": {
+      "bytes": 43344,
+      "sha256": "c9e9e30d00679ea01e79679e66679a56999c5862c4a47070cf847a0e377188c8"
+    }
+  },
+  "model_api_calls": 0,
+  "schema": "coherence-dynamics.public-data-acquisition.synthetic.v1",
+  "scientific_result": "NON_SCIENTIFIC_TEST_ONLY"
+}

@@ -1,0 +1,33 @@
+{
+  "api_credit_spend_usd": 0.0,
+  "api_or_model_calls": 0,
+  "created_at_utc": "2026-08-04T07:51:22Z",
+  "data_manifest_sha256": "386dc9b3e6d3307bf38bb0ee67df8d68f33982d4ddf20c6a503caff5eb058d7d",
+  "duplicate_trajectories_skipped": 0,
+  "extractor_forbidden_fields": [
+    "target",
+    "exit_status",
+    "generated_patch",
+    "eval_logs",
+    "reward",
+    "pass",
+    "eval_details"
+  ],
+  "feature_rows": 240,
+  "features_sha256": "38c3246b6eb601ece7ec7daaa59a0cc58c92444fbc8d6966727d1605730ed6b5",
+  "label_rows": 60,
+  "labels_sha256": "ec081e416540602cbc8f842d59d5514feaed3ae0f512975ab91d0765889ca2c6",
+  "metric_availability_sha256": "7ff9d926fc77575b44a94d215348877c834bc0e14a4555e5058528da22b7e229",
+  "prefixes_per_trajectory": 4,
+  "schema": "coherence-dynamics.public-trajectory.feature-label-binding.v2",
+  "source_columns_loaded": [
+    "instance_id",
+    "model_name",
+    "target",
+    "trajectory"
+  ],
+  "source_hashes": {
+    "data/synthetic_nebius.jsonl": "c9e9e30d00679ea01e79679e66679a56999c5862c4a47070cf847a0e377188c8"
+  },
+  "unique_trajectories": 60
+}
