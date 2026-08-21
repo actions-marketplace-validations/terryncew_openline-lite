@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0 — 2026-08-21
+
+- Added `openline-check`, an opinionated one-command front door over the existing Evidence Gateway and Receipt Gate.
+- Added a reusable composite GitHub Action that fails CI on any disposition other than `COMMIT`.
+- Added human-readable proof cards alongside machine-readable result JSON and signed decision receipts.
+- Added explicit remediation text for stale, missing, untrusted, mismatched, and unsupported evidence.
+- Added pinned-file, environment-provided, and explicitly disclosed ephemeral gate-key modes.
+- Restricted the first `openline-check` profile to native `olp.source.v1` receipts rather than silently assigning semantics to arbitrary trace JSON.
+- Added path-containment and artifact-size limits to the check-pack surface.
+- Added eight adversarial front-door tests covering current evidence, stale review, missing evidence, untrusted producer, tampering, path escape, ephemeral authority, and GitHub Step Summary output.
+- Added GitHub Marketplace metadata for the OpenLine Check Action.
+
+`openline-check` does not create a new verifier or trust model. It is a product surface over the existing receiver-owned gate. `COMMIT` remains local to the receiver policy and gate identity that produced it.
+
 ## 0.3.1 — 2026-07-17
 
 - Replaced recursive canonical-value validation with an explicit iterative stack.

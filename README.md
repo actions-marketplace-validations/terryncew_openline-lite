@@ -10,6 +10,33 @@ OpenLine Lite is a local Python stack for verified, bounded AI-agent handoffs. I
 
 No server. No database. No network fetcher. No producer-supplied `verified` flag is trusted.
 
+## OpenLine Check
+
+If you only want the receiver decision, start here:
+
+```bash
+openline-check .openline/check.json
+```
+
+The command runs the existing Evidence Gateway and Receipt Gate, prints a small proof card, and keeps
+the signed decision receipt underneath. `COMMIT` exits successfully; `QUARANTINE`, `DENY`,
+`NO_BADGE`, and `ROLLBACK_REQUEST` fail closed.
+
+The repository is also a GitHub Action:
+
+```yaml
+- uses: actions/checkout@v4
+- uses: terryncew/openline-lite@v0.4.0
+  with:
+    check-pack: .openline/check.json
+    gate-id: repo-ci
+    gate-key: ${{ secrets.OPENLINE_GATE_PRIVATE_KEY }}
+```
+
+The Action appends the proof card to the GitHub Step Summary and exposes the receiver verdict and
+disposition as outputs. See [OPENLINE_CHECK.md](OPENLINE_CHECK.md) for the check-pack shape and trust
+boundary.
+
 ## The bang-for-buck claim
 
 OpenLine Lite does **not** promise token savings on every run. Verification metadata has a fixed cost. Its included benchmark measures where bounded handoffs begin to beat full-history replay.

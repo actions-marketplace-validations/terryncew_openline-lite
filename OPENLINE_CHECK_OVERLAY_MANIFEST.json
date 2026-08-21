@@ -12,8 +12,8 @@
       "size": 2811
     },
     "action.yml": {
-      "sha256": "960af85abaa12501100425cba17f92c1683e3aa95dc4231d8c6b7a82f8a84530",
-      "size": 1928
+      "sha256": "f5a823c91d585ddd7b90a10d031e90d607ffe6fdd2ec5e8d9f9f579dd73df79c",
+      "size": 1974
     },
     "examples/openline-check/check.json": {
       "sha256": "8abf28a96621d86ed8b5650bb38451e8c787b92a7492aa060455cdf26ddab180",
@@ -44,7 +44,7 @@
       "size": 12765
     },
     "pyproject.toml": {
-      "sha256": "f7c1e947d4474d00679c307040b3efa49ea1c91b1d0f0ba689b6a4c48ef2591e",
+      "sha256": "944b9f7f2dba6db2dfda84066b2f6f788352264d27f43e8b2e0faef074b79c1d",
       "size": 1416
     },
     "tests/test_check.py": {
