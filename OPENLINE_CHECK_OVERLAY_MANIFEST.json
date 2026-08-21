@@ -48,8 +48,8 @@
       "size": 1416
     },
     "tests/test_check.py": {
-      "sha256": "c275cf2cb516eedc1892bcd9a5e29c08740af11c96d8fadbe56fc8fa0a654cb9",
-      "size": 7752
+      "sha256": "be8a2e83ebdf30e1c68d81fc9f81f50b857951975b9041baa4dfa1758b3b7688",
+      "size": 7692
     }
   },
   "profile": "openline-check-overlay.v1",

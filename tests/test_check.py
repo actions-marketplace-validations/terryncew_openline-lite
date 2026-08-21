@@ -118,9 +118,7 @@ class OpenLineCheckTests(unittest.TestCase):
         (root / "check.json").write_text(pretty(pack))
 
         if tamper_tests_after_issue:
-            (evidence / "tests.json").write_bytes(
-                b'{"commit":"abc123","passed":false}'
-            )
+            (evidence / "tests.json").write_bytes(b'{"commit":"abc123","passed":false}')
         return root / "check.json"
 
     def run_case(self, root: Path, **kwargs: Any) -> CheckRun:
@@ -138,9 +136,7 @@ class OpenLineCheckTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             result = self.run_case(root)
-            self.assertEqual(
-                (result.verdict, result.decision), ("VERIFIED", "COMMIT")
-            )
+            self.assertEqual((result.verdict, result.decision), ("VERIFIED", "COMMIT"))
             self.assertTrue((root / "out" / "decision.receipt.json").exists())
 
     def test_stale_review_denies(self) -> None:
