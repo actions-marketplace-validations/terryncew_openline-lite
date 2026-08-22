@@ -207,7 +207,11 @@ def _render_card(
         if continuity.reopened_claims:
             for claim in continuity.reopened_claims[:8]:
                 path = " -> ".join(continuity.paths.get(claim, (claim,)))
-                marker = " [required]" if claim in continuity.reopened_required_claims else ""
+                marker = (
+                    " [required]"
+                    if claim in continuity.reopened_required_claims
+                    else ""
+                )
                 lines.append(f"- {claim}{marker}: {path}")
         else:
             lines.append("- None.")

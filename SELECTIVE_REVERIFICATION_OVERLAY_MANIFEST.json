@@ -20,12 +20,12 @@
       "size": 553
     },
     "openline_lite/check.py": {
-      "sha256": "0de88bfb1e265caa601b7d56c10d4d02293724e518d5a94b4d65f761c6186651",
-      "size": 14349
+      "sha256": "e8763f7db4916214e20dd1dcd57e9c90d2fb504448df1e6b9ba5a85e5dc4ee28",
+      "size": 14429
     },
     "openline_lite/continuity.py": {
-      "sha256": "551cf8f9569d6233b3213d7803b7f9300a3e173c6ea111c4f820af71d340ee28",
-      "size": 6929
+      "sha256": "5230a44ae442a38c773d147e80feb4b321ead8c71fea75703d2aab961b81b670",
+      "size": 6795
     },
     "tests/test_selective_reverification.py": {
       "sha256": "9f828267db85a74628bcf021937b1792914446951d1570f291ba5681cd69ce99",

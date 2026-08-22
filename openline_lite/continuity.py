@@ -33,10 +33,7 @@ class ContinuityResult:
             "retained_claims": list(self.retained_claims),
             "reopened_required_claims": list(self.reopened_required_claims),
             "blocked_evidence": list(self.blocked_evidence),
-            "paths": {
-                claim: list(path)
-                for claim, path in sorted(self.paths.items())
-            },
+            "paths": {claim: list(path) for claim, path in sorted(self.paths.items())},
             "policy_authority": "receiver_owned",
             "runtime_permission": "NONE",
         }
@@ -84,13 +81,9 @@ def _validate(
     unknown = set(value) - required
     missing = required - set(value)
     if missing:
-        raise ValueError(
-            "continuity_missing:" + ",".join(sorted(missing))
-        )
+        raise ValueError("continuity_missing:" + ",".join(sorted(missing)))
     if unknown:
-        raise ValueError(
-            "continuity_unknown:" + ",".join(sorted(unknown))
-        )
+        raise ValueError("continuity_unknown:" + ",".join(sorted(unknown)))
     if value["schema"] != CONTINUITY_SCHEMA:
         raise ValueError("continuity_schema_unsupported")
 
@@ -144,9 +137,7 @@ def _validate(
             allow_empty=False,
         )
         if not set(bound) <= evidence_ids:
-            raise ValueError(
-                f"continuity_binding_unknown_evidence:{claim}"
-            )
+            raise ValueError(f"continuity_binding_unknown_evidence:{claim}")
         bindings[claim] = bound
 
     return claims, tuple(edges), changed, required_claims, bindings
@@ -181,9 +172,7 @@ def analyze_continuity(
 
     queue = deque(changed)
     seen = set(changed)
-    predecessor: dict[str, str | None] = {
-        root: None for root in changed
-    }
+    predecessor: dict[str, str | None] = {root: None for root in changed}
     reopened = {root for root in changed if root in claim_set}
 
     while queue:
