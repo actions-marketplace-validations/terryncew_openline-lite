@@ -26,7 +26,7 @@ The repository is also a GitHub Action:
 
 ```yaml
 - uses: actions/checkout@v4
-- uses: terryncew/openline-lite@v0.4.0
+- uses: terryncew/openline-lite@v0.5.0
   with:
     check-pack: .openline/check.json
     gate-id: repo-ci
@@ -36,6 +36,36 @@ The repository is also a GitHub Action:
 The Action appends the proof card to the GitHub Step Summary and exposes the receiver verdict and
 disposition as outputs. See [OPENLINE_CHECK.md](OPENLINE_CHECK.md) for the check-pack shape and trust
 boundary.
+
+### Selective Reverification
+
+OpenLine Check can now preserve evidence that still belongs to the current action while reopening only
+the evidence whose declared dependencies changed.
+
+A receiver can add an optional `continuity` object to the check pack. It declares claim dependencies,
+changed roots, which claims are required for the action, and which evidence artifacts support those
+required claims. OpenLine follows descendants from the changed roots and withholds only evidence bound
+to reopened required claims before the existing Receipt Gate runs.
+
+For example, if a patch changes while the approval artifact does not:
+
+```text
+tests-standing      REOPEN
+merge-ready         REOPEN
+review-standing     RETAIN
+
+evidence withheld:
+tests
+
+Receipt Gate:
+QUARANTINE
+```
+
+An unrelated change can leave all required evidence standing and still `COMMIT`.
+
+Selective Reverification is not a similarity score, dependency-discovery system, or second authority
+layer. The receiver owns the dependency declaration; the existing Receipt Gate still owns the signed
+disposition. See [SELECTIVE_REVERIFICATION.md](SELECTIVE_REVERIFICATION.md).
 
 ## The bang-for-buck claim
 
@@ -183,7 +213,7 @@ See [conformance/vendor-profile.json](conformance/vendor-profile.json). This map
 }
 ```
 
-Claim rules are bounded equality checks over strict JSON. They are not semantic truth, natural-language entailment, UCR, or Δhol. An empty rule set is unavailable, never an automatic pass.
+Claim rules are bounded equality checks over strict JSON. They are not semantic truth, natural-language entailment, dependency discovery, or a scalar coherence score. An empty rule set is unavailable, never an automatic pass.
 
 ## Verification and packaging
 

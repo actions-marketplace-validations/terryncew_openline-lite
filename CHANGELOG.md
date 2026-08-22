@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0 — 2026-08-21
+
+- Added optional Selective Reverification to `openline-check`.
+- Added receiver-declared dependency graphs that propagate reopening from changed roots through affected claim descendants.
+- Added explicit required-claim-to-evidence bindings so reopened required claims withhold only their bound evidence from Receipt Gate.
+- Added proof-card sections for standing retained, reverification required, dependency paths, and evidence withheld pending reverification.
+- Preserved backward compatibility: check packs without a `continuity` object use the existing v0.4.0 path unchanged.
+- Added bounded graph limits, duplicate/unknown-binding validation, cycle-safe traversal, and fail-closed malformed-control handling.
+- Added adversarial integration coverage for patch changes, review changes, unrelated changes, cycles, unknown evidence bindings, and backward compatibility.
+- Retired the old coherence-metric vocabulary from the public front-door documentation.
+
+Selective Reverification does not discover dependencies or grant permission. The receiver owns the dependency declaration; the existing Receipt Gate still issues the signed `COMMIT`, `QUARANTINE`, or `DENY` disposition.
+
 ## 0.4.0 — 2026-08-21
 
 - Added `openline-check`, an opinionated one-command front door over the existing Evidence Gateway and Receipt Gate.
