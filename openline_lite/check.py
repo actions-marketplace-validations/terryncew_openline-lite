@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .canonical import loads, pretty, sha256_hex
+from .continuity import ContinuityResult, analyze_continuity
 from .crypto import generate_private_key_hex, public_key_hex
 from .gate import DecisionResult, ReceiptGate
 from .gateway import EvidenceGateway, NativeOLPAdapter
@@ -75,7 +76,7 @@ def _parse_now(value: str | None) -> datetime | None:
 
 def _validate_pack(pack: Mapping[str, Any]) -> dict[str, Any]:
     required = {"schema", "label", "source", "producer_trust", "policy", "evidence"}
-    optional = {"source_format", "side_effect_observed", "now"}
+    optional = {"source_format", "side_effect_observed", "now", "continuity"}
     unknown = set(pack) - required - optional
     missing = required - set(pack)
     if missing:
@@ -99,6 +100,8 @@ def _validate_pack(pack: Mapping[str, Any]) -> dict[str, Any]:
         raise ValueError("check_evidence_invalid")
     if not isinstance(pack.get("side_effect_observed", False), bool):
         raise ValueError("check_side_effect_invalid")
+    if "continuity" in pack and not isinstance(pack["continuity"], Mapping):
+        raise ValueError("check_continuity_invalid")
     return dict(pack)
 
 
@@ -170,6 +173,7 @@ def _render_card(
     result: DecisionResult,
     gate_key_mode: str,
     receipt_hash: str,
+    continuity: ContinuityResult | None,
 ) -> str:
     action = source_payload.get("action")
     action_text = label
@@ -193,6 +197,23 @@ def _render_card(
         lines.extend(f"- {reason}" for reason in result.reason_codes[:8])
     else:
         lines.append("- All receiver checks passed.")
+    if continuity is not None:
+        lines.extend(["", "Standing retained:"])
+        if continuity.retained_claims:
+            lines.extend(f"- {claim}" for claim in continuity.retained_claims[:8])
+        else:
+            lines.append("- None.")
+        lines.extend(["", "Reverification required:"])
+        if continuity.reopened_claims:
+            for claim in continuity.reopened_claims[:8]:
+                path = " -> ".join(continuity.paths.get(claim, (claim,)))
+                marker = " [required]" if claim in continuity.reopened_required_claims else ""
+                lines.append(f"- {claim}{marker}: {path}")
+        else:
+            lines.append("- None.")
+        if continuity.blocked_evidence:
+            lines.extend(["", "Evidence withheld pending reverification:"])
+            lines.extend(f"- {item}" for item in continuity.blocked_evidence[:8])
     lines.extend(["", "What would clear it:"])
     lines.extend(f"- {item}" for item in _remediation(result.reason_codes))
     lines.extend(
@@ -233,6 +254,14 @@ def run_check(
         raise ValueError("producer_trust_invalid")
     policy = Policy.from_mapping(_read_object(_within(base, pack["policy"], "policy")))
     artifacts = _load_artifacts(base, pack["evidence"])
+    continuity: ContinuityResult | None = None
+    if "continuity" in pack:
+        continuity = analyze_continuity(
+            pack["continuity"],
+            evidence_ids=frozenset(pack["evidence"]),
+        )
+        for evidence_id in continuity.blocked_evidence:
+            artifacts.pop(evidence_id, None)
     source_path = _within(base, pack["source"], "source")
     source_bytes = _read_bytes(source_path, MAX_CONTROL_BYTES)
 
@@ -265,6 +294,7 @@ def run_check(
         result=result,
         gate_key_mode=key_mode,
         receipt_hash=receipt_hash,
+        continuity=continuity,
     )
     public_result = {
         "schema": "openline.check-result.v1",
@@ -288,6 +318,9 @@ def run_check(
         "decision_receipt_self_verified": True,
         "policy_authority": "receiver_owned",
         "portable_authority": "NONE",
+        "selective_reverification": (
+            None if continuity is None else continuity.to_dict()
+        ),
     }
     if output_dir is not None:
         output_dir.mkdir(parents=True, exist_ok=True)

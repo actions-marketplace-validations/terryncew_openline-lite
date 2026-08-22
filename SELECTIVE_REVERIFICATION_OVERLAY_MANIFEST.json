@@ -1,0 +1,43 @@
+{
+  "base_commit": "c5a93dd8aa32e47ff279838723890619b7cc315b",
+  "claim_boundary": "receiver_declared_dependency_reopening_only",
+  "file_count": 8,
+  "files": {
+    ".github/workflows/openline-check-selective-reverification.yml": {
+      "sha256": "4e1ec24cec8ed9052d73fdc7bf4ac66657a233175fafcd3116dfe3e3f52e736d",
+      "size": 616
+    },
+    "SELECTIVE_REVERIFICATION.md": {
+      "sha256": "7a1952f32da22b7165227d242fc0f16663e7cc4ed61221e62b8360c83fb0b347",
+      "size": 1853
+    },
+    "examples/selective-reverification/README.md": {
+      "sha256": "7e4e49e4c91eccb17dac4a11698d43d4d469ac9193e083e337b13306fa96f62d",
+      "size": 376
+    },
+    "examples/selective-reverification/continuity.json": {
+      "sha256": "6c2ac52c56b8581ffddaa3ca7f1ca3dfde6308bd1c376d69292f3d09d99440ef",
+      "size": 553
+    },
+    "openline_lite/__pycache__/continuity.cpython-313.pyc": {
+      "sha256": "f1cff4d4fc5467999ad0d0f129d61c7ebe8e6f70e4e15a40cbc7a2b0011f6609",
+      "size": 8865
+    },
+    "openline_lite/check.py": {
+      "sha256": "0de88bfb1e265caa601b7d56c10d4d02293724e518d5a94b4d65f761c6186651",
+      "size": 14349
+    },
+    "openline_lite/continuity.py": {
+      "sha256": "551cf8f9569d6233b3213d7803b7f9300a3e173c6ea111c4f820af71d340ee28",
+      "size": 6929
+    },
+    "tests/test_selective_reverification.py": {
+      "sha256": "b849d7c9573ca4996533a203c6ca66419f134f5c5c9aa26bc55a6fe078a75eef",
+      "size": 7903
+    }
+  },
+  "policy_authority": "receiver_owned",
+  "profile": "openline.lite.selective-reverification-overlay.v1",
+  "runtime_permission": "NONE",
+  "target_repository": "terryncew/openline-lite"
+}

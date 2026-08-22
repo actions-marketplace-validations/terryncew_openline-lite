@@ -1,0 +1,37 @@
+{
+  "changed": [
+    "artifact:patch"
+  ],
+  "claims": [
+    "tests-standing",
+    "review-standing",
+    "merge-ready"
+  ],
+  "edges": [
+    [
+      "artifact:patch",
+      "tests-standing"
+    ],
+    [
+      "tests-standing",
+      "merge-ready"
+    ],
+    [
+      "artifact:review",
+      "review-standing"
+    ]
+  ],
+  "evidence_bindings": {
+    "review-standing": [
+      "review"
+    ],
+    "tests-standing": [
+      "tests"
+    ]
+  },
+  "required_claims": [
+    "tests-standing",
+    "review-standing"
+  ],
+  "schema": "openline.continuity.v1"
+}
