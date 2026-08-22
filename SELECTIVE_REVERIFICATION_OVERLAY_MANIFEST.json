@@ -24,8 +24,8 @@
       "size": 14429
     },
     "openline_lite/continuity.py": {
-      "sha256": "5230a44ae442a38c773d147e80feb4b321ead8c71fea75703d2aab961b81b670",
-      "size": 6795
+      "sha256": "7969fece6353060fb3a376b915ea3e1fceec519fc4acb397b3c4ace58bb0d649",
+      "size": 6779
     },
     "tests/test_selective_reverification.py": {
       "sha256": "9f828267db85a74628bcf021937b1792914446951d1570f291ba5681cd69ce99",

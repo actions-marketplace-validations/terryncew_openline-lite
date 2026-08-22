@@ -189,9 +189,7 @@ def analyze_continuity(
     required_set = frozenset(required_claims)
     reopened_required = reopened & required_set
     blocked = {
-        evidence_id
-        for claim in reopened_required
-        for evidence_id in bindings[claim]
+        evidence_id for claim in reopened_required for evidence_id in bindings[claim]
     }
 
     paths: dict[str, tuple[str, ...]] = {}
