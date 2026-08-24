@@ -63,8 +63,13 @@ def decision(
     statuses = {
         name: {"status": "pass", "reason_codes": [], "details": {}}
         for name in (
-            "integrity", "provenance", "normalization", "policy",
-            "freshness", "evidence", "claim_support"
+            "integrity",
+            "provenance",
+            "normalization",
+            "policy",
+            "freshness",
+            "evidence",
+            "claim_support",
         )
     }
     return issue_decision_receipt(
@@ -242,7 +247,9 @@ def test_empty_index_rejected():
 def test_result_hash_is_deterministic():
     bound, *_ = fixture(["a"])
     index = build_impact_index([bound])
-    assert evaluate_impact(index, [E1]).result_sha256 == evaluate_impact(index, [E1]).result_sha256
+    assert evaluate_impact(index, [E1]).result_sha256 == evaluate_impact(
+        index, [E1]
+    ).result_sha256
 
 
 def test_partition_is_exhaustive():

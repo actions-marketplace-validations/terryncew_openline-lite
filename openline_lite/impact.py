@@ -174,9 +174,7 @@ def bind_verified_decision(
     decision_receipt = _parse_object(decision_receipt_bytes, "decision_receipt")
     verified = verify_decision_receipt(decision_receipt, trusted_gate_keys)
     if not verified["valid"]:
-        raise ValueError(
-            "decision_receipt_invalid:" + ",".join(verified["errors"])
-        )
+        raise ValueError("decision_receipt_invalid:" + ",".join(verified["errors"]))
     payload = verified["payload"]
     if payload.get("verdict") != "VERIFIED" or payload.get("decision") != "COMMIT":
         raise ValueError("decision_not_standing_commit")
@@ -213,11 +211,15 @@ def bind_verified_decision(
         and isinstance(item.get("id"), str)
         and _is_sha256(item.get("sha256"))
     }
-    missing = [evidence_id for evidence_id in required if evidence_id not in commitments]
+    missing = [
+        evidence_id for evidence_id in required if evidence_id not in commitments
+    ]
     if missing:
         raise ValueError("required_commitment_missing:" + ",".join(sorted(missing)))
 
-    evidence_hashes = tuple(sorted({commitments[evidence_id] for evidence_id in required}))
+    evidence_hashes = tuple(
+        sorted({commitments[evidence_id] for evidence_id in required})
+    )
     if len(evidence_hashes) > MAX_EVIDENCE_PER_DECISION:
         raise ValueError("decision_evidence_limit_exceeded")
 

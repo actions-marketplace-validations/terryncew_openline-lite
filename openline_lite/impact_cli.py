@@ -87,8 +87,17 @@ def run_impact_pack(pack_path: Path, output_dir: Path | None = None) -> dict[str
     for index, item in enumerate(raw_decisions):
         if not isinstance(item, Mapping):
             raise ValueError(f"impact_pack_decision_invalid:{index}")
-        allowed = {"decision_receipt", "source_receipt", "binding_completeness", "label"}
-        if set(item) - allowed or not {"decision_receipt", "source_receipt", "binding_completeness"} <= set(item):
+        allowed = {
+            "decision_receipt",
+            "source_receipt",
+            "binding_completeness",
+            "label",
+        }
+        if set(item) - allowed or not {
+            "decision_receipt",
+            "source_receipt",
+            "binding_completeness",
+        } <= set(item):
             raise ValueError(f"impact_pack_decision_fields_invalid:{index}")
         decision_path = _within(base, item["decision_receipt"], f"decision:{index}")
         source_path = _within(base, item["source_receipt"], f"source:{index}")
@@ -115,15 +124,21 @@ def run_impact_pack(pack_path: Path, output_dir: Path | None = None) -> dict[str
     }
     if output_dir is not None:
         output_dir.mkdir(parents=True, exist_ok=True)
-        (output_dir / "impact.index.json").write_text(pretty(index_obj.to_dict()), encoding="utf-8")
-        (output_dir / "impact.result.json").write_text(pretty(result.to_dict()), encoding="utf-8")
+        (output_dir / "impact.index.json").write_text(
+            pretty(index_obj.to_dict()), encoding="utf-8"
+        )
+        (output_dir / "impact.result.json").write_text(
+            pretty(result.to_dict()), encoding="utf-8"
+        )
     return public
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="openline-impact",
-        description="Find the exact boundary of lost trust after evidence invalidation.",
+        description=(
+            "Find the exact boundary of lost trust after evidence invalidation."
+        ),
     )
     parser.add_argument("pack", help="openline.impact-pack.v1 JSON file")
     parser.add_argument("--output-dir", default=".openline-impact")
