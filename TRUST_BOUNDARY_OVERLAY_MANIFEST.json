@@ -4,8 +4,8 @@
   "files": [
     {
       "path": ".github/workflows/impact.yml",
-      "sha256": "62767719c54f86c87a13bdb59920f9da0526305dcd1f6d7a23ef25b869ecef14",
-      "size": 1143
+      "sha256": "3b74398c137ac37a6d6751ebb0a5d2ef5bdb0b6875f37277ebc53c5b72a0bbdb",
+      "size": 1155
     },
     {
       "path": "TRUST_BOUNDARY.md",
@@ -19,8 +19,8 @@
     },
     {
       "path": "openline_lite/impact.py",
-      "sha256": "9d25efb29eeac68822e4db19c02aeb7746a39bd0a3b46910304e5d56dbc40032",
-      "size": 11760
+      "sha256": "3aa33d61452742638009cbcf636964e39147ca2360ca33f79cefc684dd1f1980",
+      "size": 11833
     },
     {
       "path": "openline_lite/impact_cli.py",
@@ -34,8 +34,8 @@
     },
     {
       "path": "tests/test_impact.py",
-      "sha256": "e254abbff1f8dad00070e923901eac75d0f11b2d5308f78b27ecf92ab0e278ce",
-      "size": 8602
+      "sha256": "f73d89ea5851388b3670501f5d6e0db172f2e33163765ddd44cbfbad8c199694",
+      "size": 9652
     }
   ],
   "policy_authority": "receiver_owned",
