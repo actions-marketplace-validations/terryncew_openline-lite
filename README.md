@@ -4,54 +4,130 @@
 [![Python 3.10–3.13](https://img.shields.io/badge/python-3.10%E2%80%933.13-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**Keep the receipts. Stop replaying the whole run.**
+**Know what lost standing. Keep what still deserves it.**
 
-OpenLine Lite is a local Python stack for verified, bounded AI-agent handoffs. It verifies a native receipt chain, tests the receipts' evidence under receiver-owned policy, and emits a small JSONL projection for the next model. It is aimed at indie developers who want lightweight accountability without carrying an entire transcript into every prompt.
+OpenLine Lite is a local receiver-owned verification stack for consequential AI and software decisions. It keeps signed evidence and decision receipts, fails closed when required evidence is missing or stale, and can now answer a second question after something upstream breaks:
+
+> Which previously accepted decisions actually depended on the evidence that just lost standing?
 
 No server. No database. No network fetcher. No producer-supplied `verified` flag is trusted.
 
+## Three commands
+
+| Command | Question |
+|---|---|
+| `openline-check` | May this action proceed under my receiver policy? |
+| `openline-impact` | Which standing decisions must reopen after evidence is invalidated? |
+| `olp-lite` | Verify chains, create bounded handoffs, and run the benchmark. |
+
+## OpenLine Impact
+
+`openline-impact` is the smallest operational form of the trust-boundary result:
+
+```text
+signed COMMIT decision
+        +
+exact signed source receipt
+        +
+receiver-required evidence bindings
+        ↓
+EvidenceHash → DecisionIDs
+        ↓
+evidence invalidated
+        ↓
+REOPEN / RETAIN / UNDETERMINED
+```
+
+- `REOPEN`: the invalidated evidence is in the decision's frozen required-evidence binding.
+- `RETAIN`: no invalidated evidence is bound **and** the receiver declared the binding complete.
+- `UNDETERMINED`: the binding is known to be incomplete. Missingness never silently becomes independence.
+
+The command verifies the receiver-signed decision receipt, verifies the producer source receipt against externally pinned producer trust, checks the exact source-byte hash, and indexes only evidence required by the frozen receiver policy.
+
+It does **not** discover the upstream break, infer missing dependencies, roll anything back, or authorize execution. Receiver policy decides what to do with `REOPEN` and `UNDETERMINED`.
+
+Run the in-process example:
+
+```bash
+python -m examples.impact
+```
+
+Expected shape:
+
+```json
+{
+  "REOPEN": ["deploy-api"],
+  "RETAIN": ["publish-benchmark"],
+  "UNDETERMINED": ["publish-docs"],
+  "runtime_permission": "NONE"
+}
+```
+
+For the file-based CLI pack format:
+
+```bash
+openline-impact impact-pack.json --output-dir .openline-impact
+```
+
+See [TRUST_BOUNDARY.md](TRUST_BOUNDARY.md).
+
+### Why the flat index exists
+
+OpenLine Lite still includes richer graph-based Selective Reverification when provenance paths matter. `openline-impact` is the flattened critical-path view for the common case where decision-specific evidence closure was already frozen at sign-off.
+
+That simplification is deliberate. In PSD-001, an equivalent flat decision-closure index matched evidence-graph traversal exactly on the complete trial set. The earned result is about **decision-specific evidence binding**, not unique superiority of graph traversal.
+
+The canonical external research receipt is preserved in `terryncew/openline-ace` under `results/psd001-uv-external-001/`.
+
+## What PSD-001 earned
+
+On a pinned external `astral-sh/uv` workspace, 30 receiver decisions were frozen before blind post-freeze dependency invalidations were selected.
+
+Across the 24 complete intervention trials:
+
+- decision-specific OpenLine binding: recall `1.000`, precision `1.000`, false-reopen rate `0.000`;
+- artifact/component join: recall `1.000`, precision about `0.415`, false-reopen rate about `0.254`;
+- repository-scope join: recall `1.000`, precision about `0.229`, false-reopen rate about `0.607`;
+- equivalent decision-specific flat index: exact parity with OpenLine;
+- known missing-edge arm: zero silent false retains.
+
+This was a controlled prospective perturbation on a real external software substrate, not a natural security incident. It supports selective localization of lost standing on that frozen substrate. It does not establish early warning, causal discovery, autonomous repair, or generalization to every domain.
+
+Canonical PSD-001 receipt SHA-256:
+
+```text
+0ac12393c6de8587e3879c67e51c02a7bd19646fe3be567b58aeb3338988078b
+```
+
 ## OpenLine Check
 
-If you only want the receiver decision, start here:
+If you only want the current receiver decision:
 
 ```bash
 openline-check .openline/check.json
 ```
 
-The command runs the existing Evidence Gateway and Receipt Gate, prints a small proof card, and keeps
-the signed decision receipt underneath. `COMMIT` exits successfully; `QUARANTINE`, `DENY`,
-`NO_BADGE`, and `ROLLBACK_REQUEST` fail closed.
+The command runs the Evidence Gateway and Receipt Gate, prints a proof card, and preserves the signed decision receipt. `COMMIT` exits successfully; `QUARANTINE`, `DENY`, `NO_BADGE`, and `ROLLBACK_REQUEST` fail closed.
 
 The repository is also a GitHub Action:
 
 ```yaml
 - uses: actions/checkout@v4
-- uses: terryncew/openline-lite@v0.5.0
+- uses: terryncew/openline-lite@v0.6.0
   with:
     check-pack: .openline/check.json
     gate-id: repo-ci
     gate-key: ${{ secrets.OPENLINE_GATE_PRIVATE_KEY }}
 ```
 
-The Action appends the proof card to the GitHub Step Summary and exposes the receiver verdict and
-disposition as outputs. See [OPENLINE_CHECK.md](OPENLINE_CHECK.md) for the check-pack shape and trust
-boundary.
+See [OPENLINE_CHECK.md](OPENLINE_CHECK.md).
 
-### Selective Reverification
+## Selective Reverification
 
-OpenLine Check can now preserve evidence that still belongs to the current action while reopening only
-the evidence whose declared dependencies changed.
-
-A receiver can add an optional `continuity` object to the check pack. It declares claim dependencies,
-changed roots, which claims are required for the action, and which evidence artifacts support those
-required claims. OpenLine follows descendants from the changed roots and withholds only evidence bound
-to reopened required claims before the existing Receipt Gate runs.
-
-For example, if a patch changes while the approval artifact does not:
+A check pack can optionally declare claim dependencies, changed roots, required claims, and claim-to-evidence bindings. OpenLine follows descendants from changed roots and withholds only evidence bound to reopened required claims before the existing Receipt Gate runs.
 
 ```text
 tests-standing      REOPEN
-merge-ready         REOPEN
 review-standing     RETAIN
 
 evidence withheld:
@@ -61,45 +137,22 @@ Receipt Gate:
 QUARANTINE
 ```
 
-An unrelated change can leave all required evidence standing and still `COMMIT`.
+This is not dependency discovery or a second authority layer. The receiver owns the declarations; Receipt Gate still owns the signed disposition. See [SELECTIVE_REVERIFICATION.md](SELECTIVE_REVERIFICATION.md).
 
-Selective Reverification is not a similarity score, dependency-discovery system, or second authority
-layer. The receiver owns the dependency declaration; the existing Receipt Gate still owns the signed
-disposition. See [SELECTIVE_REVERIFICATION.md](SELECTIVE_REVERIFICATION.md).
-
-## The bang-for-buck claim
-
-OpenLine Lite does **not** promise token savings on every run. Verification metadata has a fixed cost. Its included benchmark measures where bounded handoffs begin to beat full-history replay.
-
-Reference result using `tiktoken:cl100k_base`, three visible claims, and synthetic deterministic traces:
-
-| Tested depth | One next handoff | Cumulative handoff at every step |
-|---:|---:|---:|
-| 1 | 27.7% more tokens | 27.7% more tokens |
-| 2 | 10.2% fewer tokens | 2.8% more tokens |
-| 4 | 43.7% fewer tokens | 24.8% fewer tokens |
-| 8 | 71.8% fewer tokens | 54.0% fewer tokens |
-| 16 | 85.8% fewer tokens | 74.3% fewer tokens |
-| 32 | 92.9% fewer tokens | 86.3% fewer tokens |
-
-In this fixture, the first tested one-handoff break-even is depth 2; the first cumulative break-even is depth 4. Those are workload-specific measurements, not universal constants. Run the benchmark on your traces before making a cost claim.
-
-The separate nine-case policy fixture produced **9/9 correct OpenLine Lite dispositions** versus **3/9 for a signature-only baseline**. This tests receiver decisions such as commit, quarantine, and deny. It does not test whether an LLM answer becomes more accurate or useful. Each event's evidence is checked when its gate decision is issued; the handoff does not claim to reduce that evidence work.
-
-See [BENCHMARK.md](BENCHMARK.md) and the machine-readable [reference result](benchmarks/results/reference-cl100k.json).
-
-## Run it in two minutes
+## Install and run
 
 ```bash
 python -m venv .venv
 . .venv/bin/activate
 pip install .
 
+openline-check --help
+openline-impact --help
 olp-lite demo
-olp-lite benchmark --depths 1,2,4,8,16,32 --iterations 20
+python -m examples.impact
 ```
 
-For model-token counts instead of the dependency-free lexical counter:
+For model-token benchmark counts:
 
 ```bash
 pip install '.[benchmark]'
@@ -110,140 +163,45 @@ olp-lite benchmark \
   --out benchmark.json
 ```
 
-## What runs locally
+## Existing handoff result
 
-```mermaid
-flowchart TD
-    A["Source receipts + evidence"] --> B["Evidence Gateway"]
-    B --> C["Receipt Gate"]
-    C --> D["Signed decisions"]
-    D --> E["Verified bounded handoff"]
-```
+OpenLine Lite keeps complete receipts and evidence outside the model prompt and carries a bounded receiver-verified JSONL projection forward.
 
-- **Evidence Gateway:** preserves the exact source bytes, recomputes signature integrity, checks externally pinned producer trust, and normalizes supported formats.
-- **Receipt Gate:** checks action policy, freshness, committed evidence bytes, and explicit receiver-owned claim rules; then signs `COMMIT`, `QUARANTINE`, `DENY`, `NO_BADGE`, or `ROLLBACK_REQUEST`.
-- **Chain verifier:** verifies sequence, run, issuer, parent linkage, signatures, and pinned producer keys for a complete native run.
-- **Handoff projection:** includes only sources with valid receiver decisions under an exact policy-hash allowlist. A conflicting eligible non-commit decision excludes the source.
+The committed reference fixture found:
 
-The complete receipts and evidence stay outside the model prompt. The JSONL handoff is a bounded projection, not a replacement for retained evidence.
+| Tested depth | One next handoff | Cumulative handoff at every step |
+|---:|---:|---:|
+| 1 | 27.7% more tokens | 27.7% more tokens |
+| 2 | 10.2% fewer tokens | 2.8% more tokens |
+| 4 | 43.7% fewer tokens | 24.8% fewer tokens |
+| 8 | 71.8% fewer tokens | 54.0% fewer tokens |
+| 16 | 85.8% fewer tokens | 74.3% fewer tokens |
+| 32 | 92.9% fewer tokens | 86.3% fewer tokens |
 
-## The hostile control
+Those break-even points are workload-specific, not universal constants. The separate nine-case policy fixture produced 9/9 correct OpenLine Lite dispositions versus 3/9 for a narrow signature-only baseline. It measures receiver disposition correctness, not LLM answer quality.
 
-```text
-complete                → VERIFIED / COMMIT
-signed_but_unsupported  → REJECTED / DENY
-```
+See [BENCHMARK.md](BENCHMARK.md).
 
-Both source receipts are validly signed and contain every committed evidence byte. In the second case the evidence says `{"found":false}` while receiver policy requires `/found == true`. A valid signature therefore cannot smuggle an unsupported conclusion into the next handoff.
-
-The decision layer keeps these checks separate:
-
-| Layer | Receiver-side operation | Result |
-|---|---|---|
-| Integrity | Recompute Ed25519 signature over deterministic JSON | pass / fail / unavailable |
-| Provenance | Compare signer with external pinned trust | pass / fail / unavailable |
-| Normalization | Map a supported source format without upgrading trust | pass / fail / unavailable |
-| Policy | Check the action type under receiver policy | pass / fail / unavailable |
-| Freshness | Evaluate source time at the receiver | pass / fail / unavailable |
-| Evidence | Recompute required evidence hashes | pass / fail / unavailable |
-| Claim support | Replay bounded JSON Pointer equality rules | pass / fail / unavailable |
-
-Any failed check produces `REJECTED`. Any unavailable check produces `UNDECIDABLE`. Only an all-pass assessment can produce `VERIFIED / COMMIT`.
-
-## Create a verified handoff
-
-The manifests are JSON arrays of file paths relative to each manifest:
-
-```bash
-olp-lite verify-chain \
-  --manifest chain-manifest.json \
-  --trust producer-trust.json
-
-olp-lite handoff \
-  --chain chain-manifest.json \
-  --decisions decisions-manifest.json \
-  --producer-trust producer-trust.json \
-  --gate-trust gate-trust.json \
-  --policy receiver-policy.json \
-  --max-claims 3 \
-  --out next-agent.jsonl
-```
-
-`--policy` is repeatable. Its exact canonical hash authorizes inclusion. A correctly signed decision made under another policy is counted as ignored; it cannot authorize prompt carryover.
-
-For a runnable library example:
-
-```bash
-python -m examples.handoff
-```
-
-## Bring a foreign receipt
-
-The native format is `olp.source.v1`. A declarative adapter can ingest another Ed25519-signed deterministic-JSON shape without copying its self-declared trust fields:
-
-```bash
-olp-lite inspect \
-  --source vendor-receipt.json \
-  --source-format example.vendor.receipt.v1 \
-  --adapter-profile vendor-profile.json \
-  --trust trust.json
-```
-
-See [conformance/vendor-profile.json](conformance/vendor-profile.json). This mapping layer does not claim compatibility with any named third-party protocol until a version-pinned fixture and conformance test exist.
-
-## Receiver policy
-
-```json
-{
-  "policy_id": "record-lookup",
-  "version": "3",
-  "allowed_actions": ["tool_call"],
-  "required_evidence": ["tool-output"],
-  "claim_rules": [
-    {
-      "id": "record-found",
-      "evidence_id": "tool-output",
-      "pointer": "/found",
-      "expected": true
-    }
-  ],
-  "max_age_seconds": 300,
-  "on_undecidable": "QUARANTINE",
-  "rollback_supported": false
-}
-```
-
-Claim rules are bounded equality checks over strict JSON. They are not semantic truth, natural-language entailment, dependency discovery, or a scalar coherence score. An empty rule set is unavailable, never an automatic pass.
-
-## Verification and packaging
-
-```bash
-python -m unittest discover -s tests -v
-python -m conformance.run
-python -m build
-```
-
-CI runs linting, 44 adversarial and integration tests on Python 3.10–3.13, the conformance checkpoint, a clean-wheel smoke test, and the `cl100k_base` benchmark. The benchmark JSON is uploaded as a CI artifact.
-
-## Honest boundaries
+## Receiver-owned boundary
 
 OpenLine Lite proves that the described local checks ran and that the receiver signed the resulting disposition. It does not prove:
 
-- complete event capture;
+- complete event or dependency capture;
 - issuer honesty or semantic truth;
-- that a policy chose the right facts;
+- that receiver policy chose the right facts;
 - improved LLM answer quality;
 - universal token savings;
+- early warning or failure prediction;
+- causal discovery or autonomous repair;
 - hardware-backed key custody;
 - transparency-log inclusion;
 - side-effect reversal;
-- compatibility with named external receipt protocols;
 - production safety.
 
-`ROLLBACK_REQUEST` asks another component to attempt reversal. It does not undo anything itself. The included keys and raw key-file workflow are for local development, not production key management.
+`ROLLBACK_REQUEST` asks another component to attempt reversal. `openline-impact` returns a standing partition. Neither executes remediation.
 
-Canonical JSON is limited to 128 levels and 100,000 values. Over-limit documents return a canonical validation failure; they never receive a trust or policy decision. JSON Pointer array indexes accept ASCII digits only and reject oversized values before integer conversion.
+The included raw key workflow is for local development, not production key management.
 
-See [ARCHITECTURE.md](ARCHITECTURE.md), [SECURITY.md](SECURITY.md), [ADOPTION.md](ADOPTION.md), and the exact [release verification](VERIFICATION.md).
+See [ARCHITECTURE.md](ARCHITECTURE.md), [SECURITY.md](SECURITY.md), [ADOPTION.md](ADOPTION.md), [TRUST_BOUNDARY.md](TRUST_BOUNDARY.md), and [VERIFICATION.md](VERIFICATION.md).
 
 MIT licensed. Alpha reference implementation; independent reproduction and security review are welcome.

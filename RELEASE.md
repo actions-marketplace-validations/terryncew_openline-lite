@@ -1,50 +1,51 @@
-# GitHub release kit
+# OpenLine Lite v0.6.0 release kit
 
-Repository: `openline-lite`
+## Release title
 
-Description:
-
-> Verified, bounded AI-agent handoffs that cut prompt carryover after break-even without trusting signatures alone.
-
-Topics: `ai-agents`, `agent-security`, `audit`, `receipts`, `ed25519`, `evidence`, `handoff`, `prompt-engineering`, `python`, `zero-trust`
-
-## v0.3.1 release title
-
-`OpenLine Lite v0.3.1 — bounded verification, including hostile JSON depth`
+`OpenLine Lite v0.6.0 — Know the boundary of lost trust`
 
 ## Release body
 
-OpenLine Lite keeps complete receipt chains and evidence locally while carrying only receiver-selected facts into the next model prompt.
+OpenLine Lite v0.6.0 adds a second receiver-owned question beside “may this action proceed?”:
 
-This release includes native chain verification, exact policy-hash admission, pinned signed gate decisions, conflict exclusion, and a bounded JSONL handoff. Arbitrary source-authored prose remains in the full audit projection but stays out of prompt carryover.
+> Evidence X lost standing. Which previously accepted decisions actually depended on it?
 
-v0.3.1 also replaces recursive canonical JSON validation with an explicit stack capped at 128 levels and 100,000 values. Deep unauthenticated input now returns a normal canonical failure across the gateway, claim-support evaluator, receipt gate, native chain verifier, and mapped adapter. JSON Pointer array indexes are ASCII-only and bounded before integer conversion. v0.3.0 is superseded.
+The new `openline-impact` command verifies signed standing decisions and exact signed source receipts, flattens receiver-required evidence bindings into `EvidenceHash → DecisionIDs`, and partitions the result into:
 
-The included three-track benchmark compares full history, the same unsigned compact projection, and the verified handoff. With `cl100k_base` on the committed synthetic fixture:
+- `REOPEN` — the invalidated evidence is explicitly bound to the decision;
+- `RETAIN` — no invalidated evidence is bound and the receiver declared the binding complete;
+- `UNDETERMINED` — the binding is known to be incomplete, so absence cannot be treated as independence.
 
-- depth 1 costs 27.7% more prompt tokens than full history;
-- the first tested one-handoff break-even is depth 2;
-- the first tested cumulative break-even is depth 4;
-- depth 16 uses 85.8% fewer one-handoff tokens and 74.3% fewer cumulative tokens;
-- the policy fixture reaches 9/9 correct dispositions versus 3/9 for a narrow signature-only baseline.
+It does not discover the original break, infer missing dependencies, authorize execution, or perform rollback. Receiver policy remains the authority for what happens after the partition.
+
+Why the flat index? PSD-001 prospectively froze 30 decisions on a pinned external `astral-sh/uv` workspace before blind dependency invalidations were chosen. Across 24 complete trials, decision-specific binding preserved 1.000 recall and 1.000 precision with zero false reopenings; the artifact-level join preserved recall but had about 0.415 precision. A flat decision-specific closure index matched graph traversal exactly. The earned claim is therefore decision-specific binding, not graph-algorithm superiority.
+
+Canonical PSD-001 receipt SHA-256:
+
+`0ac12393c6de8587e3879c67e51c02a7bd19646fe3be567b58aeb3338988078b`
+
+v0.6.0 also fixes a stale version seam: package metadata and `openline_lite.__version__` are both `0.6.0`, with a regression test that prevents future drift.
 
 Run it:
 
 ```bash
 pip install .
+openline-impact --help
+python -m examples.impact
+openline-check --help
 olp-lite demo
-olp-lite benchmark --depths 1,2,4,8,16,32
-python -m examples.handoff
 ```
 
-The benchmark does not call an LLM or claim improved answer quality. Its token threshold is specific to the declared workload, tokenizer, and three-item fact budget. Cost, latency, stored bytes, and decision correctness remain separate.
+Status remains alpha. The result does not establish early warning, prediction, causal discovery, autonomous repair, complete dependency capture, hardware-backed key custody, or production safety.
 
-Status: alpha reference implementation. No server, network fetcher, hardware key integration, transparency log, UCR, Δhol, named external protocol compatibility, or executed rollback is claimed.
+## Tag
 
-Independent reproductions and hostile fixtures are invited.
+```text
+v0.6.0
+```
 
 ## Suggested launch post
 
-> Agent chains waste tokens when every handoff replays the whole run. I built OpenLine Lite to keep the receipts locally and pass only receiver-verified facts forward. The benchmark found the honest boundary: one-step runs cost more; this fixture breaks even at depth 2 and reaches 85.8% fewer handoff tokens at depth 16. Full method and falsifiers are in the repo.
-
-Put the repository link in the first reply if the platform favors link-free primary posts.
+> Something upstream breaks. Most systems know how to panic. The harder question is what actually lost standing.
+>
+> OpenLine Lite v0.6.0 adds `openline-impact`: invalidate one evidence receipt and get a bounded `REOPEN / RETAIN / UNDETERMINED` partition over prior signed decisions. The point is smaller blast radius, not smarter guessing.
