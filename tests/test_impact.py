@@ -64,8 +64,7 @@ def decision(
         "claim_support",
     )
     statuses = {
-        name: {"status": "pass", "reason_codes": [], "details": {}}
-        for name in names
+        name: {"status": "pass", "reason_codes": [], "details": {}} for name in names
     }
     payload = {
         "schema": "olp.decision.v1",

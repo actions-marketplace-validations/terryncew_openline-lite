@@ -320,8 +320,7 @@ def evaluate_impact(
         "retain": retain,
         "undetermined": undetermined,
         "matched_evidence": {
-            decision: list(evidence)
-            for decision, evidence in matched.items()
+            decision: list(evidence) for decision, evidence in matched.items()
         },
         "index_sha256": index.index_sha256,
         "policy_authority": "receiver_owned",
