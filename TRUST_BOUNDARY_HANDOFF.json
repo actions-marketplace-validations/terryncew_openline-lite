@@ -1,0 +1,17 @@
+{
+  "base_commit": "ed9eb9cc3b89191239236e1cc4596afd3ddbe00b",
+  "branch": "feat/trust-boundary-index",
+  "commit": "feat(lite): add decision trust-boundary index",
+  "merge": "feat/trust-boundary-index -> main",
+  "new_command": "openline-impact",
+  "policy_authority": "receiver_owned",
+  "pr_title": "Add decision trust-boundary impact index",
+  "repository": "terryncew/openline-lite",
+  "research_basis": {
+    "canonical_receipt_sha256": "0ac12393c6de8587e3879c67e51c02a7bd19646fe3be567b58aeb3338988078b",
+    "earned_claim": "decision-specific evidence binding can reduce unnecessary revocation relative to coarse artifact-level joining on the frozen external uv substrate",
+    "experiment": "PSD-001"
+  },
+  "runtime_permission": "NONE",
+  "schema": "openline.lite.trust-boundary-handoff.v1"
+}

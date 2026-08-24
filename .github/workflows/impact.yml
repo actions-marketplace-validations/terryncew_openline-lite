@@ -1,0 +1,38 @@
+name: OpenLine Impact
+
+on:
+  pull_request:
+    paths:
+      - "openline_lite/impact.py"
+      - "openline_lite/impact_cli.py"
+      - "tests/test_impact.py"
+      - "TRUST_BOUNDARY.md"
+      - "pyproject.toml"
+      - ".github/workflows/impact.yml"
+      - "TRUST_BOUNDARY_OVERLAY_MANIFEST.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  impact:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: python -m pip install -e . pytest
+      - name: Existing suite
+        run: python -m pytest -q
+      - name: Impact adversarial suite
+        run: python -m pytest tests/test_impact.py -q
+      - name: CLI import
+        run: python -c "from openline_lite.impact_cli import main; assert callable(main)"
