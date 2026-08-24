@@ -145,9 +145,7 @@ def main() -> None:
         "invalidated_evidence_sha256": revoked,
         "REOPEN": [labels[decision_id] for decision_id in result.reopen],
         "RETAIN": [labels[decision_id] for decision_id in result.retain],
-        "UNDETERMINED": [
-            labels[decision_id] for decision_id in result.undetermined
-        ],
+        "UNDETERMINED": [labels[decision_id] for decision_id in result.undetermined],
         "runtime_permission": "NONE",
     }
     print(json.dumps(output, indent=2, sort_keys=True))
