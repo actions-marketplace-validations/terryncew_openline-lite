@@ -1,0 +1,47 @@
+name: Impact Ruff Format Capture
+
+on:
+  push:
+    branches:
+      - feat/trust-boundary-index
+    paths:
+      - ".github/workflows/impact-ruff-format-capture.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install exact canonical formatter
+        run: |
+          python -m pip install ruff==0.15.2
+          ruff --version
+      - name: Apply exact canonical formatting
+        run: |
+          ruff format openline_lite/impact.py tests/test_impact.py
+          ruff format --check openline_lite/impact.py tests/test_impact.py
+          ruff check openline_lite/impact.py tests/test_impact.py
+      - name: Show exact formatter diff
+        run: git diff -- openline_lite/impact.py tests/test_impact.py
+      - name: Bind formatted bytes
+        run: |
+          sha256sum \
+            openline_lite/impact.py \
+            tests/test_impact.py \
+            > impact-ruff-0.15.2.sha256
+          cat impact-ruff-0.15.2.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: impact-ruff-0.15.2-formatted
+          path: |
+            openline_lite/impact.py
+            tests/test_impact.py
+            impact-ruff-0.15.2.sha256
+          if-no-files-found: error
