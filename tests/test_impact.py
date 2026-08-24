@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
-
 import pytest
 
 from openline_lite.canonical import pretty
@@ -10,9 +8,6 @@ from openline_lite.crypto import generate_private_key_hex, public_key_hex
 from openline_lite.impact import (
     COMPLETE,
     INCOMPLETE,
-    REOPEN,
-    RETAIN,
-    UNDETERMINED,
     bind_verified_decision,
     build_impact_index,
     evaluate_impact,
