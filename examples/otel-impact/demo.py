@@ -180,17 +180,27 @@ def build_demo(output_dir: Path) -> dict[str, object]:
     gate_trust = {GATE_ID: public_key_hex(gate_key)}
     producer_trust = {PRODUCER_ID: public_key_hex(producer_key)}
     (output_dir / "gate-trust.json").write_text(pretty(gate_trust), encoding="utf-8")
-    (output_dir / "producer-trust.json").write_text(pretty(producer_trust), encoding="utf-8")
+    (output_dir / "producer-trust.json").write_text(
+        pretty(producer_trust), encoding="utf-8"
+    )
 
     specs: list[tuple[str, str, str]] = []
-    specs.extend((label, "dependency-observation", "COMPLETE") for label in (
-        "deploy-api", "publish-container", "approve-release"
-    ))
-    specs.extend((label, "build-observation", "COMPLETE") for label in _labels("retained-build", 11))
-    specs.extend((label, "docs-observation", "COMPLETE") for label in _labels("retained-docs", 11))
-    specs.extend((label, "build-observation", "INCOMPLETE") for label in (
-        "unknown-service-a", "unknown-service-b"
-    ))
+    specs.extend(
+        (label, "dependency-observation", "COMPLETE")
+        for label in ("deploy-api", "publish-container", "approve-release")
+    )
+    specs.extend(
+        (label, "build-observation", "COMPLETE")
+        for label in _labels("retained-build", 11)
+    )
+    specs.extend(
+        (label, "docs-observation", "COMPLETE")
+        for label in _labels("retained-docs", 11)
+    )
+    specs.extend(
+        (label, "build-observation", "INCOMPLETE")
+        for label in ("unknown-service-a", "unknown-service-b")
+    )
 
     pack_decisions: list[dict[str, str]] = []
     for label, required, completeness in specs:

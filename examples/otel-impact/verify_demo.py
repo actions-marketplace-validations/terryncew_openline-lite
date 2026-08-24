@@ -1,4 +1,5 @@
 """Independent-ish output contract verifier for the canonical OTel -> Impact demo."""
+
 from __future__ import annotations
 
 import argparse
@@ -35,7 +36,9 @@ def main() -> int:
         receipt_bytes = (root / "otel-receipts" / f"{evidence_id}.json").read_bytes()
         assert hashlib.sha256(receipt_bytes).hexdigest() == item["sha256"]
 
-    impact = json.loads((root / ".openline-impact" / "impact.result.json").read_text(encoding="utf-8"))
+    impact = json.loads(
+        (root / ".openline-impact" / "impact.result.json").read_text(encoding="utf-8")
+    )
     assert len(impact["reopen"]) == 3
     assert len(impact["retain"]) == 22
     assert len(impact["undetermined"]) == 2

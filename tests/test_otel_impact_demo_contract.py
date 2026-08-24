@@ -1,4 +1,5 @@
 """Dependency-free guardrails for the optional OTel -> Impact example."""
+
 from pathlib import Path
 import unittest
 
