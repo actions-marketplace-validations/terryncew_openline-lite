@@ -1,0 +1,41 @@
+name: OTel Impact Demo
+
+on:
+  pull_request:
+    paths:
+      - "examples/otel-impact/**"
+      - "openline_lite/impact.py"
+      - "openline_lite/impact_cli.py"
+      - ".github/workflows/otel-impact-demo.yml"
+  push:
+    branches: [main]
+    paths:
+      - "examples/otel-impact/**"
+      - "openline_lite/impact.py"
+      - "openline_lite/impact_cli.py"
+      - ".github/workflows/otel-impact-demo.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install OpenLine Lite
+        run: python -m pip install -e .
+      - name: Install pinned OpenTelemetry rail
+        run: python -m pip install -r examples/otel-impact/requirements.txt
+      - name: Run canonical bridge demo
+        run: python examples/otel-impact/demo.py --output /tmp/openline-otel-impact
+      - name: Verify emitted receipts and standing partition
+        run: python examples/otel-impact/verify_demo.py /tmp/openline-otel-impact
