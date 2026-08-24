@@ -4,14 +4,22 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "openline-lite"
-version = "0.5.0"
-description = "Verified, bounded AI-agent handoffs with measured prompt-token break-even."
+version = "0.6.0"
+description = "Receiver-owned verification, selective reverification, and decision trust-boundary impact."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{name = "Terrynce White"}]
-keywords = ["ai-agents", "evidence", "receipts", "handoff", "audit", "ed25519"]
+keywords = [
+  "ai-agents",
+  "evidence",
+  "receipts",
+  "handoff",
+  "audit",
+  "ed25519",
+  "trust-boundary",
+]
 dependencies = ["cryptography>=42,<48"]
 classifiers = [
   "Development Status :: 3 - Alpha",

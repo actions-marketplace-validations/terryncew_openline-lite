@@ -1,0 +1,65 @@
+{
+  "base_commit": "5ba5ad4daa25fe5b31b04c4cbec083ef68e51cc2",
+  "file_count": 11,
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "52a43b769ebf3d458c7efca7b392506e841ae27d54e2313036e7aa6370f691f3",
+      "size": 3443
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "a5b6a069a29c6e53dc98ce52666d9739b5b688f8db460ae16261ce754c7b4615",
+      "size": 6216
+    },
+    {
+      "path": "EVIDENCE.json",
+      "sha256": "35071388f48a71eecfca339aeb13bf753c51f54c1a5e89d49ea147dd498d67b5",
+      "size": 2076
+    },
+    {
+      "path": "README.md",
+      "sha256": "204738f143bf37bfe8b6ac9d760b09d58725aededc4e15432b25d5932d4c7f9f",
+      "size": 7943
+    },
+    {
+      "path": "RELEASE.md",
+      "sha256": "b91ccd28caaa753a2eee429adde0c95fa79ebf455e679a50f93b780b30132564",
+      "size": 2499
+    },
+    {
+      "path": "RELEASE_060_HANDOFF.json",
+      "sha256": "5bea857ec58c5bd919e25b546ecd1de5230266f8086a563a988e0d53079378d9",
+      "size": 584
+    },
+    {
+      "path": "VERIFICATION.md",
+      "sha256": "2d4c59a9f12d63fb26803def682e13062f2a8f3b0447eccf541f7f17e3a674a3",
+      "size": 1795
+    },
+    {
+      "path": "examples/impact.py",
+      "sha256": "ad197c0cc51344915000aefa808e42fcf19256a75d3bd6c452f77a647b54d9eb",
+      "size": 4773
+    },
+    {
+      "path": "openline_lite/__init__.py",
+      "sha256": "6a41041eae3f1c791d35d0011cb56fa1c11403ef6948abd1b47118f7dc3bcbde",
+      "size": 1029
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "bdcceeb002082639c65f0f8d7c03fbe2ffd2832e16e5a555730db95c2bbe8681",
+      "size": 1517
+    },
+    {
+      "path": "tests/test_version.py",
+      "sha256": "306d16455831bcf471867dd2c7ba5d71274a6661a81b2ef16a07c587e7c0e69b",
+      "size": 457
+    }
+  ],
+  "policy_authority": "receiver_owned",
+  "release": "0.6.0",
+  "runtime_permission": "NONE",
+  "schema": "openline.lite.release-060-overlay-manifest.v1"
+}

@@ -1,0 +1,14 @@
+{
+  "base_commit": "5ba5ad4daa25fe5b31b04c4cbec083ef68e51cc2",
+  "branch": "release/openline-lite-v0.6.0",
+  "commit": "release: prepare OpenLine Lite v0.6.0",
+  "merge": "release/openline-lite-v0.6.0 -> main",
+  "policy_authority": "receiver_owned",
+  "pr_title": "Release OpenLine Lite v0.6.0 \u2014 trust boundary",
+  "release": "0.6.0",
+  "release_title": "OpenLine Lite v0.6.0 \u2014 Know the boundary of lost trust",
+  "repository": "terryncew/openline-lite",
+  "runtime_permission": "NONE",
+  "schema": "openline.lite.release-handoff.v1",
+  "tag_after_green_merge": "v0.6.0"
+}

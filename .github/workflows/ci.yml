@@ -37,6 +37,7 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - run: python -m conformance.run
       - run: olp-lite demo
+      - run: python -m examples.impact
 
   calibration-trial:
     runs-on: ubuntu-latest
@@ -64,6 +65,18 @@ jobs:
       - run: python -m venv /tmp/openline-clean
       - run: /tmp/openline-clean/bin/pip install dist/*.whl
       - run: cd /tmp && /tmp/openline-clean/bin/olp-lite demo
+      - run: cd /tmp && /tmp/openline-clean/bin/openline-check --help
+      - run: cd /tmp && /tmp/openline-clean/bin/openline-impact --help
+      - name: Verify installed version coherence
+        run: |
+          /tmp/openline-clean/bin/python - <<'PY'
+          from importlib.metadata import version
+          import openline_lite
+
+          assert version("openline-lite") == "0.6.0"
+          assert openline_lite.__version__ == "0.6.0"
+          assert version("openline-lite") == openline_lite.__version__
+          PY
       - run: cd /tmp && /tmp/openline-clean/bin/olp-lite benchmark --depths 1,2,4 --iterations 2 --out /tmp/wheel-benchmark.json
 
   benchmark:

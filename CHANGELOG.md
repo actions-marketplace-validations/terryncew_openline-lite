@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.6.0 — 2026-08-23
+
+- Added `openline-impact`, a flat reverse evidence index for locating which standing decisions lose standing after an evidence invalidation.
+- Added strict `REOPEN`, `RETAIN`, and `UNDETERMINED` partitioning.
+- Allowed `RETAIN` only for receiver-declared complete bindings; incomplete bindings fail closed to `UNDETERMINED` when no known match exists.
+- Bound Impact decisions to verified receiver-signed `VERIFIED / COMMIT` receipts, exact source-receipt bytes, pinned producer trust, and receiver-required evidence commitments.
+- Prevented colocated but non-required evidence from expanding the invalidation boundary.
+- Added deterministic hash-bound Impact index and result objects.
+- Added 18 adversarial Impact tests and a Python 3.10–3.13 dedicated workflow.
+- Added a runnable three-decision Impact example.
+- Added a permanent test requiring package metadata and `openline_lite.__version__` to agree.
+- Updated the public product framing around the boundary of lost trust.
+
+Research boundary: PSD-001 supports decision-specific evidence binding versus coarse artifact/repository joining on one frozen external `astral-sh/uv` substrate. An equivalent flat decision-specific index matched graph traversal exactly, so v0.6.0 does not claim unique graph-algorithm superiority.
+
 ## 0.5.0 — 2026-08-21
 
 - Added optional Selective Reverification to `openline-check`.
@@ -23,7 +38,6 @@ Selective Reverification does not discover dependencies or grant permission. The
 - Restricted the first `openline-check` profile to native `olp.source.v1` receipts rather than silently assigning semantics to arbitrary trace JSON.
 - Added path-containment and artifact-size limits to the check-pack surface.
 - Added eight adversarial front-door tests covering current evidence, stale review, missing evidence, untrusted producer, tampering, path escape, ephemeral authority, and GitHub Step Summary output.
-- Added GitHub Marketplace metadata for the OpenLine Check Action.
 
 `openline-check` does not create a new verifier or trust model. It is a product surface over the existing receiver-owned gate. `COMMIT` remains local to the receiver policy and gate identity that produced it.
 
