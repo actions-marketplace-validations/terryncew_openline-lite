@@ -67,6 +67,7 @@ jobs:
       - run: cd /tmp && /tmp/openline-clean/bin/olp-lite demo
       - run: cd /tmp && /tmp/openline-clean/bin/openline-check --help
       - run: cd /tmp && /tmp/openline-clean/bin/openline-impact --help
+      - run: cd /tmp && /tmp/openline-clean/bin/openline-handoff --help
       - name: Verify installed version coherence
         run: |
           /tmp/openline-clean/bin/python - <<'PY'

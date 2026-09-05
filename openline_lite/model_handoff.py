@@ -206,7 +206,10 @@ def _validate_task(
     computed = object_hash(packet)
     if envelope["packet_sha256"] != computed:
         raise ValueError("model_task_packet_hash_invalid")
-    if packet["schema"] != TASK_SCHEMA or packet["candidate_schema"] != CANDIDATE_SCHEMA:
+    if (
+        packet["schema"] != TASK_SCHEMA
+        or packet["candidate_schema"] != CANDIDATE_SCHEMA
+    ):
         raise ValueError("model_task_packet_schema_invalid")
     if packet["project_id"] != state["project_id"]:
         raise ValueError("model_task_project_mismatch")
