@@ -140,3 +140,66 @@ On `COMMIT`, use `result/state.json` as the next verified state. On `QUARANTINE`
 A model can write “the tests passed,” but that sentence is not forwarded. If the receiver independently verifies the cited receipt hash and `/exit_code = 0`, the next state may carry only that fact.
 
 That is the entire point of v1.
+
+## Funes memory beneath the verified boundary
+
+[Funes](https://github.com/huggingface/funes) can provide verbatim recall across Claude, Codex, Hermes, pi, and subagent sessions. OpenLine Lite does not treat that memory as verified state.
+
+`openline-funes-handoff` captures the exact `funes recall` output, hashes it, records the Funes version/query/memory in a manifest, and binds that manifest hash into the ordinary OpenLine task packet. The recalled passages are then available to the model as historical context, but they cannot become the next model's verified state merely because they were recalled.
+
+The boundary is:
+
+```text
+Funes recall (verbatim history, provenance)
+        ↓
+UNVERIFIED_MEMORY
+        ↓
+bounded OpenLine task
+        ↓
+Claude / Codex / other model
+        ↓
+normal candidate evidence requirements
+        ↓
+COMMIT / QUARANTINE / DENY
+        ↓
+verified state only
+```
+
+If old memory says “tests passed,” that may tell the model where to look. It does not make `tests_passed` a verified fact. The candidate must still point to a receiver-checkable receipt or other supported evidence.
+
+### Create a task with Funes recall
+
+Install Funes separately and make sure `funes --version` works. Then:
+
+```bash
+openline-funes-handoff task \
+  --state ~/.openline-handoff/my-project/state.json \
+  --task-id redirect-fix-002 \
+  --instructions task.txt \
+  --query "why did we choose the redirect handling this way" \
+  --memory local \
+  --out-dir ~/.openline-handoff/my-project/funes-task
+```
+
+The output directory contains:
+
+- `task.json` — the normal OpenLine task packet;
+- `recall.txt` — exact Funes recall bytes;
+- `recall.json` — source/version/query/memory plus the recall SHA-256;
+- `.sha256` sidecars for each artifact.
+
+Give the model `task.json`, `recall.json`, and `recall.txt`. Keep the control directory outside the model's writable scope or mount it read-only.
+
+Before use, the harness can recheck the bundle:
+
+```bash
+openline-funes-handoff verify-bundle \
+  --task ~/.openline-handoff/my-project/funes-task/task.json \
+  --recall-manifest ~/.openline-handoff/my-project/funes-task/recall.json \
+  --recall ~/.openline-handoff/my-project/funes-task/recall.txt
+```
+
+This verifies that the recall bytes still match their manifest and that the exact manifest was bound into the task packet. It does not certify that recalled prose is current or true.
+
+After the model produces its candidate, use the ordinary `openline-handoff verify` command. On `COMMIT`, the successor state contains only the receiver-verified facts and file hashes. A later Codex task may query the same Funes memory again, but Claude's recalled prose never silently becomes Codex's verified project state.
+
