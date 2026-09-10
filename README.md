@@ -4,13 +4,17 @@
 [![Python 3.10–3.13](https://img.shields.io/badge/python-3.10%E2%80%933.13-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**Know what lost standing. Keep what still deserves it.**
+## New to OpenLine? [Start here](START_HERE.md)
 
-OpenLine Lite is a local receiver-owned verification stack for consequential AI and software decisions. It keeps signed evidence and decision receipts, fails closed when required evidence is missing or stale, and can now answer a second question after something upstream breaks:
+Run a local example, see what OpenLine can do today, and choose the right path for coding agents, provider changes, or guarded tool calls.
 
-> Which previously accepted decisions actually depended on the evidence that just lost standing?
+**This repository is the front door.** [The Start Here guide](START_HERE.md) connects Lite, Airlock, Wallet, and Receipt Gate without requiring you to install the whole stack.
 
-No server. No database. No network fetcher. No producer-supplied `verified` flag is trusted.
+## What Lite does
+
+OpenLine Lite checks evidence under receiver-owned rules and identifies earlier decisions that must reopen when their required evidence loses standing. It also provides a [verified model handoff wrapper](MODEL_HANDOFF.md) for carrying checked project facts forward.
+
+No server or database is required. A producer's `verified` flag is not trusted.
 
 ## Three commands
 
