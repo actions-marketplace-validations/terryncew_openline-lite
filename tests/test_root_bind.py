@@ -218,9 +218,7 @@ class MandateConservationTests(unittest.TestCase):
         for item in (receipt, receipt2):
             self.assertEqual(
                 item["receipt_hash"],
-                object_hash(
-                    {k: v for k, v in item.items() if k != "receipt_hash"}
-                ),
+                object_hash({k: v for k, v in item.items() if k != "receipt_hash"}),
             )
 
     def test_actor_subdivision_creates_no_capacity(self):
@@ -268,9 +266,7 @@ class MandateConservationTests(unittest.TestCase):
 
     def test_receipts_carry_exact_frozen_binding(self):
         archive, _ = archive_with_v1()
-        ledger = MandateLedger.begin(
-            archive, policy_id=POLICY_ID, policy_version="v1"
-        )
+        ledger = MandateLedger.begin(archive, policy_id=POLICY_ID, policy_version="v1")
         ledger.admit_actor("A")
         ledger.admit_actor("B")
         first = ledger.allocate("A", "B", 30)
@@ -287,9 +283,7 @@ class MandateConservationTests(unittest.TestCase):
 
     def test_v1_ledger_receipts_verify_after_v2(self):
         archive, _ = archive_with_v1()
-        ledger = MandateLedger.begin(
-            archive, policy_id=POLICY_ID, policy_version="v1"
-        )
+        ledger = MandateLedger.begin(archive, policy_id=POLICY_ID, policy_version="v1")
         ledger.admit_actor("A")
         ledger.admit_actor("B")
         receipt = ledger.allocate("A", "B", 30)

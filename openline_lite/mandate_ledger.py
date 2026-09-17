@@ -78,7 +78,9 @@ class MandateLedger:
         if section_name not in sections:
             raise LedgerRefused("ledger_section_unknown")
         section = sections[section_name]
-        capacity = section.get("mandate_capacity") if isinstance(section, dict) else None
+        capacity = (
+            section.get("mandate_capacity") if isinstance(section, dict) else None
+        )
         if isinstance(capacity, bool) or not isinstance(capacity, int) or capacity <= 0:
             raise LedgerRefused("capacity_invalid")
         binding = make_binding(policy_id, policy_version, sections, section_name)

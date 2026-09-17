@@ -165,9 +165,7 @@ class PolicyArchive:
         return tuple(version for (pid, version) in self._entries if pid == policy_id)
 
 
-def verify_binding(
-    binding: PolicyBinding, archive: PolicyArchive
-) -> tuple[bool, str]:
+def verify_binding(binding: PolicyBinding, archive: PolicyArchive) -> tuple[bool, str]:
     """Pure verification of a binding against the archive.
 
     Never falls back to the newest version: the claimed version must resolve
