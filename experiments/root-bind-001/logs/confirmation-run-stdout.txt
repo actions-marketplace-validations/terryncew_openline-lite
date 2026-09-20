@@ -1,0 +1,8 @@
+=== environment ===
+Python 3.12.3
+cryptography 47.0.0
+Linux-7.0.0-26-generic-x86_64-with-glibc2.39
+git SHA: bb3b1ec2f16e76cc3b03459a52a2fff139c45bc4
+command: python -m unittest discover -s tests -p "test_root_bind.py" -v
+=== run ===
+exit=0

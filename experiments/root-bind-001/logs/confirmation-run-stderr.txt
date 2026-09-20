@@ -1,0 +1,26 @@
+test_actor_subdivision_creates_no_capacity (test_root_bind.MandateConservationTests.test_actor_subdivision_creates_no_capacity) ... ok
+test_fixture_conservation_events (test_root_bind.MandateConservationTests.test_fixture_conservation_events) ... ok
+test_ledger_begin_rejects_unknown_version (test_root_bind.MandateConservationTests.test_ledger_begin_rejects_unknown_version) ... ok
+test_ledger_begin_requires_capacity_in_section (test_root_bind.MandateConservationTests.test_ledger_begin_requires_capacity_in_section) ... ok
+test_over_capacity_refused_atomically (test_root_bind.MandateConservationTests.test_over_capacity_refused_atomically) ... ok
+test_receipts_carry_exact_frozen_binding (test_root_bind.MandateConservationTests.test_receipts_carry_exact_frozen_binding) ... ok
+test_v1_ledger_receipts_verify_after_v2 (test_root_bind.MandateConservationTests.test_v1_ledger_receipts_verify_after_v2) ... ok
+test_binding_fields_strict (test_root_bind.PolicyRootBindingTests.test_binding_fields_strict) ... ok
+test_binding_verifies (test_root_bind.PolicyRootBindingTests.test_binding_verifies) ... ok
+test_changed_content_changes_root (test_root_bind.PolicyRootBindingTests.test_changed_content_changes_root) ... ok
+test_make_binding_unknown_section_rejected (test_root_bind.PolicyRootBindingTests.test_make_binding_unknown_section_rejected) ... ok
+test_root_hash_is_content_addressed (test_root_bind.PolicyRootBindingTests.test_root_hash_is_content_addressed) ... ok
+test_section_hash_recomputes_from_section_content (test_root_bind.PolicyRootBindingTests.test_section_hash_recomputes_from_section_content) ... ok
+test_section_name_is_part_of_binding (test_root_bind.PolicyRootBindingTests.test_section_name_is_part_of_binding) ... ok
+test_tampered_content_binding_fails (test_root_bind.PolicyRootBindingTests.test_tampered_content_binding_fails) ... ok
+test_unknown_section_fails (test_root_bind.PolicyRootBindingTests.test_unknown_section_fails) ... ok
+test_unknown_version_fails (test_root_bind.PolicyRootBindingTests.test_unknown_version_fails) ... ok
+test_v1_receipts_survive_v2_and_relabel_fails (test_root_bind.PolicyRootBindingTests.test_v1_receipts_survive_v2_and_relabel_fails) ... ok
+test_version_reuse_with_different_root_rejected (test_root_bind.PolicyRootBindingTests.test_version_reuse_with_different_root_rejected) ... ok
+test_wrong_root_fails (test_root_bind.PolicyRootBindingTests.test_wrong_root_fails) ... ok
+test_wrong_section_hash_fails (test_root_bind.PolicyRootBindingTests.test_wrong_section_hash_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.006s
+
+OK
