@@ -181,6 +181,18 @@ UNDETERMINED means standing cannot be established — treat it as
 unresolved, never as current. For agent workflows see
 [integrations/living-wiki/SKILL.md](integrations/living-wiki/SKILL.md).
 
+### Related work: OpenWiki
+
+LangChain’s OpenWiki reached the stale-support problem first and goes further inside its own wiki engine. Its Grounded Claims runtime links factual claims to versioned repository evidence, detects stale or unresolved evidence, and routes those claims back through re-verification or correction. In LangChain’s replay evaluation, stale claims fell from 3.5% to 0.5% and hallucinated claims from 0.7% to 0%.
+
+openline-wiki is narrower. It does not generate or rewrite a wiki, call a model, or attempt to determine whether a claim is true. It is a small standing adapter for an existing source/compiled wiki layout: record which source versions a page was declared to depend on, then later return RETAIN, REOPEN, or UNDETERMINED when another system wants to rely on that page.
+
+UNDETERMINED is not presented as a feature OpenWiki lacks. It is OpenLine’s explicit handling of incomplete dependency capture: if the recorded dependency set was never declared complete, the adapter will not infer that the page remains current.
+
+The practical distinction is scope and role. OpenWiki builds freshness and self-correction into its own wiki lifecycle. openline-wiki stops at standing and leaves generation, correction, and downstream policy to the system already using the wiki.
+
+Grounded Claims currently apply to OpenWiki’s repository code wikis and repository evidence; its own docs say connector-derived facts are not claimed. openline-wiki has so far only demonstrated portability across two outside wiki layouts without compiler changes. It has not demonstrated universal wiki compatibility or cross-system provenance.
+
 ## Install and run
 
 ```bash
